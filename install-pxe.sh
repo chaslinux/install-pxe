@@ -8,7 +8,7 @@
 
 # CONSTANTS
 CODEDIR="/home/$USER/Code"
-TEMPDIR="/home/$USER/TEMPDIR"
+UNPACKDIR="/home/$USER/UNPACKDIR"
 SHIMFILE=$(ls | grep "shim.signed")
 GRUBFILE=$(ls | grep "grub-efi")
 TFTP_DEFAULT="/srv/tftp"
@@ -29,8 +29,8 @@ sudo apt install nfs-kernel-server -y
 sudo apt install unzip -y
 
 # Download pxelinux packages
-mkdir -p $TEMPDIR/{shim,grub}
-cd $TEMPDIR
+mkdir -p $UNPACKDIR/{shim,grub}
+cd $UNPACKDIR
 wget https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.zip
 unzip syslinux-6.03.zip
 
@@ -44,7 +44,7 @@ sudo mkdir -p $HTTP_DEFAULT/xubuntu/{server,desktop}/{focal,jammy}
 
 
 # download UEFI packages & ISO images
-cd $TEMPDIR
+cd $UNPACKDIR
 apt-get download shim.signed
 dpkg -x $SHIMFILE shim
 apt-get download grub-efi-amd64-signed
@@ -59,18 +59,18 @@ sudo cp -rf /mnt/.disk $HTTP_DEFAULT/xubuntu/desktop/jammy
 sudo umount /mnt
 
 ### populate the tftp folder
-sudo cp $TEMPDIR/bios/com32/elflink/ldlinux/ldlinux.c32  $TFTP_DEFAULT/bios
-sudo cp $TEMPDIR/bios/com32/libutil/libutil.c32 $TFTP_DEFAULT/bios
-sudo cp $TEMPDIR/bios/com32/menu/menu.c32 $TFTP_DEFAULT/bios
-sudo cp $TEMPDIR/bios/com32/menu/vesamenu.c32 $TFTP_DEFAULT/bios
-sudo cp $TEMPDIR/bios/core/pxelinux.0 $TFTP_DEFAULT/bios
-sudo cp $TEMPDIR/bios/core/lpxelinux.0 $TFTP_DEFAULT/bios
+sudo cp $UNPACKDIR/bios/com32/elflink/ldlinux/ldlinux.c32  $TFTP_DEFAULT/bios
+sudo cp $UNPACKDIR/bios/com32/libutil/libutil.c32 $TFTP_DEFAULT/bios
+sudo cp $UNPACKDIR/bios/com32/menu/menu.c32 $TFTP_DEFAULT/bios
+sudo cp $UNPACKDIR/bios/com32/menu/vesamenu.c32 $TFTP_DEFAULT/bios
+sudo cp $UNPACKDIR/bios/core/pxelinux.0 $TFTP_DEFAULT/bios
+sudo cp $UNPACKDIR/bios/core/lpxelinux.0 $TFTP_DEFAULT/bios
 sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/vmlinuz $TFTP_DEFAULT/boot/casper
 sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/initrd $TFTP_DEFAULT/boot/casper
 
 ### populate the grub folder
-sudo cp $TEMPDIR/grub/usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed $TFTP_DEFAULT/grubx64.efi
-sudo cp $TEMPDIR/shim/usr/lib/shim/shimx64.efi.signed $TFTP_DEFAULT/grub/bootx64.efi
+sudo cp $UNPACKDIR/grub/usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed $TFTP_DEFAULT/grubx64.efi
+sudo cp $UNPACKDIR/shim/usr/lib/shim/shimx64.efi.signed $TFTP_DEFAULT/grub/bootx64.efi
 cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/grub.cfg $TFTP_DEFAULT/grub
 cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/unicode.pf2 $TFTP_DEFAULT/grub/font.pf2
 
