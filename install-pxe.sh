@@ -7,8 +7,8 @@
 
 
 # CONSTANTS
-CODEDIR=~/Code
-TEMPDIR=TEMPDIR
+CODEDIR=/home/$USER/Code
+TEMPDIR=/home/$USER/TEMPDIR
 SHIMFILE=$(ls | grep "shim.signed")
 GRUBFILE=$(ls | grep "grub-efi")
 TFTP_DEFAULT=/srv/tftp
@@ -29,8 +29,8 @@ sudo apt install nfs-kernel-server -y
 sudo apt install unzip -y
 
 # Download pxelinux packages
-mkdir ~/TEMPDIR
-cd ~/TEMPDIR
+mkdir $TEMPDIR
+cd $TEMPDIR
 wget https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.zip
 unzip syslinux-6.03.zip
 
