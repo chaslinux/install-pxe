@@ -44,6 +44,7 @@ sudo mkdir -p $HTTP_DEFAULT/xubuntu/{server,desktop}/{focal,jammy}
 
 
 # download UEFI packages & ISO images
+cd $TEMPDIR
 apt-get download shim.signed
 dpkg -x $SHIMFILE shim
 apt-get download grub-efi-amd64-signed
