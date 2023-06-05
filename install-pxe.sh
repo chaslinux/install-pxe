@@ -46,8 +46,12 @@ sudo mkdir -p $HTTP_DEFAULT/xubuntu/{server,desktop}/{focal,jammy}
 # download UEFI packages & ISO images
 cd $UNPACKDIR
 apt-get download shim.signed
+declare -p SHIMFILE
+echo $SHIMFILE
 dpkg -x $SHIMFILE shim
 apt-get download grub-efi-amd64-signed
+declare -p GRUBFILE
+echo $GRUBFILE
 dpkg -x $GRUBFILE grub
 
 # for now just download jammy and unpack it into the $HTTP_DEFAULT/xubuntu/desktop/<version> directory
@@ -80,6 +84,7 @@ sudo ln -s $TFTP_DEFAULT/boot $TFTP_DEFAULT/bios/boot
 ### copy the default file included here to $TFTP_DEFAULT/bios/pxelinux.cfg
 sudo cp $CODEDIR/install-pxe/default $TFTP_DEFAULT/bios/pxelinux.cfg
 sudo cp $CODEDIR/install-pxe/grub.cfg $TFTP_DEFAULT/grub
+
 
 
 
