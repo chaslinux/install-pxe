@@ -77,7 +77,7 @@ sudo ln -s $TFTP_DEFAULT/boot $TFTP_DEFAULT/bios/boot
 
 ### copy the default file included here to $TFTP_DEFAULT/bios/pxelinux.cfg
 sudo cp $CODEDIR/install-pxe/default $TFTP_DEFAULT/bios/pxelinux.cfg
-
+sudo cp $CODEDIR/install-pxe/grub.cfg $TFTP_DEFAULT/grub
 
 
 
