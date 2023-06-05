@@ -29,7 +29,7 @@ sudo apt install nfs-kernel-server -y
 sudo apt install unzip -y
 
 # Download pxelinux packages
-mkdir $TEMPDIR
+mkdir -p $TEMPDIR/{shim,grub}
 cd $TEMPDIR
 wget https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.zip
 unzip syslinux-6.03.zip
@@ -52,6 +52,7 @@ dpkg -x $GRUBFILE grub
 # for now just download jammy and unpack it into the $HTTP_DEFAULT/xubuntu/desktop/<version> directory
 wget http://mirror.csclub.uwaterloo.ca/xubuntu-releases/22.04/release/$JAMMYDESKTOP
 sudo mount $JAMMYDESKTOP /mnt
+echo "*** COPYING ISO to $HTTP_DEFAULT/xubuntu/desktop/jammy - be patient ***"
 sudo cp -rf /mnt/* $HTTP_DEFAULT/xubuntu/desktop/jammy
 sudo cp -rf /mnt/.disk $HTTP_DEFAULT/xubuntu/desktop/jammy
 sudo umount /mnt
