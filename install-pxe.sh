@@ -7,12 +7,12 @@
 
 
 # CONSTANTS
-CODEDIR=/home/$USER/Code
-TEMPDIR=/home/$USER/TEMPDIR
+CODEDIR="/home/$USER/Code"
+TEMPDIR="/home/$USER/TEMPDIR"
 SHIMFILE=$(ls | grep "shim.signed")
 GRUBFILE=$(ls | grep "grub-efi")
-TFTP_DEFAULT=/srv/tftp
-HTTP_DEFAULT=/var/www/html
+TFTP_DEFAULT="/srv/tftp"
+HTTP_DEFAULT="/var/www/html"
 JAMMYDESKTOP=xubuntu-22.04.2-desktop-amd64.iso
 
 ### first update the system
