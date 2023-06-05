@@ -1,0 +1,14 @@
+DEFAULT menu.c32
+MENU TITLE ULTIMATE PXE SERVER - By Griffon - Ver 2.0
+PROMPT 0 
+TIMEOUT 0
+
+MENU COLOR TABMSG  37;40  #ffffffff #00000000
+MENU COLOR TITLE   37;40  #ffffffff #00000000 
+MENU COLOR SEL      7     #ffffffff #00000000
+MENU COLOR UNSEL    37;40 #ffffffff #00000000
+MENU COLOR BORDER   37;40 #ffffffff #00000000
+
+LABEL Xubuntu Desktop 22.04
+    kernel /boot/casper/vmlinuz
+    append nfsroot=172.26.0.30:/var/www/html/xubuntu/desktop/jammy netboot=nfs ip=dhcp boot=casper initrd=/boot/casper/initrd systemd.mask=tmp.mount --
