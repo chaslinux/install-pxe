@@ -9,8 +9,6 @@
 # CONSTANTS
 CODEDIR="/home/$USER/Code"
 UNPACKDIR="/home/$USER/UNPACKDIR"
-SHIMFILE=$(ls | grep "shim.signed")
-GRUBFILE=$(ls | grep "grub-efi")
 TFTP_DEFAULT="/srv/tftp"
 HTTP_DEFAULT="/var/www/html"
 JAMMYDESKTOP=xubuntu-22.04.2-desktop-amd64.iso
@@ -31,8 +29,13 @@ sudo apt install unzip -y
 # Download pxelinux packages
 mkdir -p $UNPACKDIR/{shim,grub}
 cd $UNPACKDIR
-wget https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.zip
-unzip syslinux-6.03.zip
+if [ ! -f $UNPACKDIR/syslinux-6.03.zip ] ; then
+{
+	wget https://mirrors.edge.kernel.org/pub/linux/utils/boot/syslinux/syslinux-6.03.zip
+	unzip syslinux-6.03.zip
+}
+fi
+
 
 ### Create the tftp folder structure, 
 # note - differs from c-nergy as /srv/tftp is the default
@@ -42,50 +45,48 @@ sudo mkdir -p $TFTP_DEFAULT/boot/casper
 sudo mkdir -p $TFTP_DEFAULT/bios/pxelinux.cfg
 sudo mkdir -p $HTTP_DEFAULT/xubuntu/{server,desktop}/{focal,jammy}
 
-echo "*** Starting SHIM and GRUB unpacking ***"
-
 # download UEFI packages & ISO images
 cd $UNPACKDIR
 echo $UNPACKDIR
 apt-get download shim.signed
-declare -p SHIMFILE
+SHIMFILE=$(ls shim-signed*)
 echo $SHIMFILE
 dpkg -x $SHIMFILE shim
 apt-get download grub-efi-amd64-signed
-declare -p GRUBFILE
+GRUBFILE=$(ls grub-efi*)
 echo $GRUBFILE
 dpkg -x $GRUBFILE grub
 
 # for now just download jammy and unpack it into the $HTTP_DEFAULT/xubuntu/desktop/<version> directory
-# wget http://mirror.csclub.uwaterloo.ca/xubuntu-releases/22.04/release/$JAMMYDESKTOP
-# sudo mount $JAMMYDESKTOP /mnt
-# echo "*** COPYING ISO to $HTTP_DEFAULT/xubuntu/desktop/jammy - be patient ***"
-# sudo cp -rf /mnt/* $HTTP_DEFAULT/xubuntu/desktop/jammy
-# sudo cp -rf /mnt/.disk $HTTP_DEFAULT/xubuntu/desktop/jammy
-# sudo umount /mnt
+wget http://mirror.csclub.uwaterloo.ca/xubuntu-releases/22.04/release/$JAMMYDESKTOP
+sudo mount $JAMMYDESKTOP /mnt
+echo "*** COPYING ISO to $HTTP_DEFAULT/xubuntu/desktop/jammy - be patient ***"
+sudo cp -rf /mnt/* $HTTP_DEFAULT/xubuntu/desktop/jammy
+sudo cp -rf /mnt/.disk $HTTP_DEFAULT/xubuntu/desktop/jammy
+sudo umount /mnt
 
 ### populate the tftp folder
-# sudo cp $UNPACKDIR/bios/com32/elflink/ldlinux/ldlinux.c32  $TFTP_DEFAULT/bios
-# sudo cp $UNPACKDIR/bios/com32/libutil/libutil.c32 $TFTP_DEFAULT/bios
-# sudo cp $UNPACKDIR/bios/com32/menu/menu.c32 $TFTP_DEFAULT/bios
-# sudo cp $UNPACKDIR/bios/com32/menu/vesamenu.c32 $TFTP_DEFAULT/bios
-# sudo cp $UNPACKDIR/bios/core/pxelinux.0 $TFTP_DEFAULT/bios
-# sudo cp $UNPACKDIR/bios/core/lpxelinux.0 $TFTP_DEFAULT/bios
-# sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/vmlinuz $TFTP_DEFAULT/boot/casper
-# sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/initrd $TFTP_DEFAULT/boot/casper
+sudo cp $UNPACKDIR/bios/com32/elflink/ldlinux/ldlinux.c32  $TFTP_DEFAULT/bios
+sudo cp $UNPACKDIR/bios/com32/libutil/libutil.c32 $TFTP_DEFAULT/bios
+sudo cp $UNPACKDIR/bios/com32/menu/menu.c32 $TFTP_DEFAULT/bios
+sudo cp $UNPACKDIR/bios/com32/menu/vesamenu.c32 $TFTP_DEFAULT/bios
+sudo cp $UNPACKDIR/bios/core/pxelinux.0 $TFTP_DEFAULT/bios
+sudo cp $UNPACKDIR/bios/core/lpxelinux.0 $TFTP_DEFAULT/bios
+sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/vmlinuz $TFTP_DEFAULT/boot/casper
+sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/initrd $TFTP_DEFAULT/boot/casper
 
 ### populate the grub folder
-# sudo cp $UNPACKDIR/grub/usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed $TFTP_DEFAULT/grubx64.efi
-# sudo cp $UNPACKDIR/shim/usr/lib/shim/shimx64.efi.signed $TFTP_DEFAULT/grub/bootx64.efi
-# cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/grub.cfg $TFTP_DEFAULT/grub
-# cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/unicode.pf2 $TFTP_DEFAULT/grub/font.pf2
+sudo cp $UNPACKDIR/grub/usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed $TFTP_DEFAULT/grubx64.efi
+sudo cp $UNPACKDIR/shim/usr/lib/shim/shimx64.efi.signed $TFTP_DEFAULT/grub/bootx64.efi
+cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/grub.cfg $TFTP_DEFAULT/grub
+cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/unicode.pf2 $TFTP_DEFAULT/grub/font.pf2
 
 ### symlink the boot folder
-# sudo ln -s $TFTP_DEFAULT/boot $TFTP_DEFAULT/bios/boot
+sudo ln -s $TFTP_DEFAULT/boot $TFTP_DEFAULT/bios/boot
 
 ### copy the default file included here to $TFTP_DEFAULT/bios/pxelinux.cfg
-# sudo cp $CODEDIR/install-pxe/default $TFTP_DEFAULT/bios/pxelinux.cfg
-# sudo cp $CODEDIR/install-pxe/grub.cfg $TFTP_DEFAULT/grub
+sudo cp $CODEDIR/install-pxe/default $TFTP_DEFAULT/bios/pxelinux.cfg
+sudo cp $CODEDIR/install-pxe/grub.cfg $TFTP_DEFAULT/grub
 
 
 
