@@ -1,3 +1,5 @@
+!/bin/bash
+
 ### install-pxe.sh
 
 # automate the installation of a PXE server that can automatically install Xubuntu Desktop 20.04
@@ -40,9 +42,9 @@ fi
 ### Create the tftp folder structure, 
 # note - differs from c-nergy as /srv/tftp is the default
 # in /var/www/html used the xubuntu subdirectory instead of just server and desktop
-sudo mkdir -p $TFTP_DEFAULT/{bios,boot,grub}
-sudo mkdir -p $TFTP_DEFAULT/boot/casper
-sudo mkdir -p $TFTP_DEFAULT/bios/pxelinux.cfg
+sudo mkdir -p $TFTP_DEFAULT/{xubuntu,grub}
+sudo mkdir -p $TFTP_DEFAULT/xubuntu/desktop/jammy
+sudo mkdir -p $TFTP_DEFAULT/pxelinux.cfg
 sudo mkdir -p $HTTP_DEFAULT/xubuntu/{server,desktop}/{focal,jammy}
 
 # download UEFI packages & ISO images
@@ -66,26 +68,26 @@ sudo cp -rf /mnt/.disk $HTTP_DEFAULT/xubuntu/desktop/jammy
 sudo umount /mnt
 
 ### populate the tftp folder
-sudo cp $UNPACKDIR/bios/com32/elflink/ldlinux/ldlinux.c32  $TFTP_DEFAULT/bios
-sudo cp $UNPACKDIR/bios/com32/libutil/libutil.c32 $TFTP_DEFAULT/bios
-sudo cp $UNPACKDIR/bios/com32/menu/menu.c32 $TFTP_DEFAULT/bios
-sudo cp $UNPACKDIR/bios/com32/menu/vesamenu.c32 $TFTP_DEFAULT/bios
-sudo cp $UNPACKDIR/bios/core/pxelinux.0 $TFTP_DEFAULT/bios
-sudo cp $UNPACKDIR/bios/core/lpxelinux.0 $TFTP_DEFAULT/bios
-sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/vmlinuz $TFTP_DEFAULT/boot/casper
-sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/initrd $TFTP_DEFAULT/boot/casper
+sudo cp $UNPACKDIR/bios/com32/elflink/ldlinux/ldlinux.c32  $TFTP_DEFAULT
+sudo cp $UNPACKDIR/bios/com32/libutil/libutil.c32 $TFTP_DEFAULT
+sudo cp $UNPACKDIR/bios/com32/menu/menu.c32 $TFTP_DEFAULT
+sudo cp $UNPACKDIR/bios/com32/menu/vesamenu.c32 $TFTP_DEFAULT
+sudo cp $UNPACKDIR/bios/core/pxelinux.0 $TFTP_DEFAULT
+sudo cp $UNPACKDIR/bios/core/lpxelinux.0 $TFTP_DEFAULT
+sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/vmlinuz $TFTP_DEFAULT/xubuntu/desktop/jammy
+sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/initrd $TFTP_DEFAULT/xubuntu/desktop/jammy
 
 ### populate the grub folder
-sudo cp $UNPACKDIR/grub/usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed $TFTP_DEFAULT/grubx64.efi
+sudo cp $UNPACKDIR/grub/usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed $TFTP_DEFAULT/grub/grubx64.efi
 sudo cp $UNPACKDIR/shim/usr/lib/shim/shimx64.efi.signed $TFTP_DEFAULT/grub/bootx64.efi
 cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/grub.cfg $TFTP_DEFAULT/grub
 cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/unicode.pf2 $TFTP_DEFAULT/grub/font.pf2
 
 ### symlink the boot folder
-sudo ln -s $TFTP_DEFAULT/boot $TFTP_DEFAULT/bios/boot
+#sudo ln -s $TFTP_DEFAULT/boot $TFTP_DEFAULT/bios/boot
 
 ### copy the default file included here to $TFTP_DEFAULT/bios/pxelinux.cfg
-sudo cp $CODEDIR/install-pxe/default $TFTP_DEFAULT/bios/pxelinux.cfg
+sudo cp $CODEDIR/install-pxe/default $TFTP_DEFAULT/pxelinux.cfg
 sudo cp $CODEDIR/install-pxe/grub.cfg $TFTP_DEFAULT/grub
 
 
