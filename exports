@@ -1,0 +1,3 @@
+# this is the nfs config file for install-pxe.sh
+
+/var/www/html/xubuntu *(ro, fsid=0)
