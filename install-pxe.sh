@@ -98,7 +98,7 @@ sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/initrd $TFTP_DEFAULT/xubuntu/
 
 ### copy the default file included here to $TFTP_DEFAULT/bios/pxelinux.cfg
 sudo cp $CODEDIR/install-pxe/default $TFTP_DEFAULT/pxelinux.cfg
-sudo cp $CODEDIR/install-pxe/grub.cfg $TFTP_DEFAULT/grub
+sudo cp $CODEDIR/install-pxe/grub.cfg $TFTP_DEFAULT
 
 
 ### copy the exports file over the default exports file
