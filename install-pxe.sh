@@ -102,7 +102,7 @@ sudo cp $CODEDIR/install-pxe/grub.cfg $TFTP_DEFAULT/grub
 
 
 ### copy the exports file over the default exports file
-sudo cp $CODEFIR/exports /etc/exports
+sudo cp $CODEDIR/install-pxe/exports /etc/exports
 
 
 ############## IGNORE EVERYTHING HERE AS THIS IS FROM AN OLD SERVER - HERE for REFERENCE ############
