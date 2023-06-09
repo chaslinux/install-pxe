@@ -10,5 +10,5 @@ MENU COLOR UNSEL    37;40 #ffffffff #00000000
 MENU COLOR BORDER   37;40 #ffffffff #00000000
 
 LABEL Xubuntu Desktop 22.04
-    kernel /boot/casper/vmlinuz
-    append nfsroot=172.26.0.30:/var/www/html/xubuntu/desktop/jammy netboot=nfs ip=dhcp boot=casper initrd=/boot/casper/initrd systemd.mask=tmp.mount --
+    kernel xubuntu/desktop/jammy/vmlinuz
+    append nfsroot=172.26.0.30:/var/www/html/xubuntu/desktop/jammy netboot=nfs ip=dhcp boot=casper initrd=xubuntu/desktop/jammy/initrd systemd.mask=tmp.mount --
