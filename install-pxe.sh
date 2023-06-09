@@ -47,17 +47,27 @@ sudo mkdir -p $TFTP_DEFAULT/xubuntu/desktop/jammy
 sudo mkdir -p $TFTP_DEFAULT/pxelinux.cfg
 sudo mkdir -p $HTTP_DEFAULT/xubuntu/{server,desktop}/{focal,jammy}
 
-# download UEFI packages & ISO images
+### download UEFI packages & ISO images
 cd $UNPACKDIR
 echo $UNPACKDIR
-apt-get download shim.signed
-SHIMFILE=$(ls shim-signed*)
-echo $SHIMFILE
-dpkg -x $SHIMFILE shim
-apt-get download grub-efi-amd64-signed
-GRUBFILE=$(ls grub-efi*)
-echo $GRUBFILE
-dpkg -x $GRUBFILE grub
+apt download shim-signed
+dpkg-deb --fsys-tarfile shim-signed*deb | tar x ./usr/lib/shim/shimx64.efi.signed -O > bootx64.efi
+sudo mv bootx64.efi /srv/tftp
+apt download grub-efi-amd64-signed
+dpkg-deb --fsys-tarfile grub-efi-amd64-signed*deb | tar x ./usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed -O > grubx64.efi
+sudo mv grubx64.efi /srv/tftp
+apt download grub-common
+dpkg-deb --fsys-tarfile grub-common*deb | tar x ./usr/share/grub/unicode.pf2 -O > unicode.pf2
+sudo mv unicode.pf2 /srv/tftp
+
+# apt-get download shim.signed
+# SHIMFILE=$(ls shim-signed*)
+# echo $SHIMFILE
+# dpkg -x $SHIMFILE shim
+# apt-get download grub-efi-amd64-signed
+# GRUBFILE=$(ls grub-efi*)
+# echo $GRUBFILE
+# dpkg -x $GRUBFILE grub
 
 # for now just download jammy and unpack it into the $HTTP_DEFAULT/xubuntu/desktop/<version> directory
 wget http://mirror.csclub.uwaterloo.ca/xubuntu-releases/22.04/release/$JAMMYDESKTOP
@@ -78,10 +88,10 @@ sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/vmlinuz $TFTP_DEFAULT/xubuntu
 sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/initrd $TFTP_DEFAULT/xubuntu/desktop/jammy
 
 ### populate the grub folder
-sudo cp $UNPACKDIR/grub/usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed $TFTP_DEFAULT/grub/grubx64.efi
-sudo cp $UNPACKDIR/shim/usr/lib/shim/shimx64.efi.signed.latest $TFTP_DEFAULT/grub/bootx64.efi
-sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/grub.cfg $TFTP_DEFAULT/grub
-sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/fonts/unicode.pf2 $TFTP_DEFAULT/grub/font.pf2
+# sudo cp $UNPACKDIR/grub/usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed $TFTP_DEFAULT/grub/grubx64.efi
+# sudo cp $UNPACKDIR/shim/usr/lib/shim/shimx64.efi.signed.latest $TFTP_DEFAULT/grub/bootx64.efi
+# sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/grub.cfg $TFTP_DEFAULT/grub
+# sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/fonts/unicode.pf2 $TFTP_DEFAULT/grub/font.pf2
 
 ### symlink the boot folder
 #sudo ln -s $TFTP_DEFAULT/boot $TFTP_DEFAULT/bios/boot
