@@ -80,8 +80,8 @@ sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/initrd $TFTP_DEFAULT/xubuntu/
 ### populate the grub folder
 sudo cp $UNPACKDIR/grub/usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed $TFTP_DEFAULT/grub/grubx64.efi
 sudo cp $UNPACKDIR/shim/usr/lib/shim/shimx64.efi.signed $TFTP_DEFAULT/grub/bootx64.efi
-cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/grub.cfg $TFTP_DEFAULT/grub
-cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/unicode.pf2 $TFTP_DEFAULT/grub/font.pf2
+sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/grub.cfg $TFTP_DEFAULT/grub
+sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/boot/grub/fonts/unicode.pf2 $TFTP_DEFAULT/grub/font.pf2
 
 ### symlink the boot folder
 #sudo ln -s $TFTP_DEFAULT/boot $TFTP_DEFAULT/bios/boot
