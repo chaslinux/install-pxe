@@ -1,12 +1,19 @@
 #!/bin/bash
 
 ### install-pxe.sh
+### by chaslinux@gmail.com
 
 # automate the installation of a PXE server that can automatically install Xubuntu Desktop 20.04
 # other tools to be added later.
 
-### by chaslinux@gmail.com
+### This is mostly based on the work done by Griffon at: https://c-nergy.be/blog/?p=13771
 
+# Please don't bug Griffon about this script as it doesn't follow Griffon's steps exactly.
+# At the moment UEFI booting is bugged, but Legacy booting seems to work.
+
+# Note: This script assumes a firewall like pfsense doing dhcp for you, it doesn't install a DHCP server
+# in pfsense you're going to want to point to pxelinux.0 in the DHCP tftp settings for legacy
+# and bootx64.efi for UEFI -- which isn't working at the moment.
 
 # CONSTANTS
 CODEDIR="/home/$USER/Code"
