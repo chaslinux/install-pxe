@@ -51,7 +51,7 @@ sudo mkdir -p $HTTP_DEFAULT/xubuntu/{server,desktop}/{focal,jammy}
 cd $UNPACKDIR
 echo $UNPACKDIR
 apt download shim-signed
-dpkg-deb --fsys-tarfile shim-signed*deb | tar x ./usr/lib/shim/shimx64.efi.signed -O > bootx64.efi
+dpkg-deb --fsys-tarfile shim-signed*deb | tar x ./usr/lib/shim/shimx64.efi.signed.latest -O > bootx64.efi
 sudo mv bootx64.efi /srv/tftp
 apt download grub-efi-amd64-signed
 dpkg-deb --fsys-tarfile grub-efi-amd64-signed*deb | tar x ./usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed -O > grubx64.efi
