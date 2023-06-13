@@ -14,6 +14,8 @@
 # Note: This script assumes a firewall like pfsense doing dhcp for you, it doesn't install a DHCP server
 # in pfsense you're going to want to point to pxelinux.0 in the DHCP tftp settings for legacy
 # and bootx64.efi for UEFI -- which isn't working at the moment.
+#
+### Update: 06/13/2023 - UEFI should now look to syslinux.efi -- testing something new
 
 # CONSTANTS
 CODEDIR="/home/$USER/Code"
@@ -58,14 +60,20 @@ sudo mkdir -p $HTTP_DEFAULT/xubuntu/{server,desktop}/{focal,jammy}
 cd $UNPACKDIR
 echo $UNPACKDIR
 apt download shim-signed
-dpkg-deb --fsys-tarfile shim-signed*deb | tar x ./usr/lib/shim/shimx64.efi.signed.latest -O > bootx64.efi
-sudo mv bootx64.efi /srv/tftp
+dpkg-deb --fsys-tarfile shim-signed*deb # | tar x ./usr/lib/shim/shimx64.efi.signed.latest -O > bootx64.efi
+# sudo mv bootx64.efi /srv/tftp
 apt download grub-efi-amd64-signed
-dpkg-deb --fsys-tarfile grub-efi-amd64-signed*deb | tar x ./usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed -O > grubx64.efi
-sudo mv grubx64.efi /srv/tftp
+dpkg-deb --fsys-tarfile grub-efi-amd64-signed*deb # | tar x ./usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed -O > grubx64.efi
+# sudo mv grubx64.efi /srv/tftp
 apt download grub-common
-dpkg-deb --fsys-tarfile grub-common*deb | tar x ./usr/share/grub/unicode.pf2 -O > unicode.pf2
-sudo mv unicode.pf2 /srv/tftp/grub/font.pf2
+dpkg-deb --fsys-tarfile grub-common*deb # | tar x ./usr/share/grub/unicode.pf2 -O > unicode.pf2
+# sudo mv unicode.pf2 /srv/tftp/grub/font.pf2
+sudo cp $UNPACKDIR/efi64/efi/syslinux.efi /srv/tftp
+sudo cp $UNPACKDIR/efi64/com32/elflink/ldlinux/ldlinux.e64 /srv/tftp
+sudo cp $UNPACKDIR/efi64/com32/lib/libcom32.c32 /srv/tftp
+
+
+
 
 # apt-get download shim.signed
 # SHIMFILE=$(ls shim-signed*)
