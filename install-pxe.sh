@@ -20,6 +20,7 @@
 # CONSTANTS
 CODEDIR="/home/$USER/Code"
 UNPACKDIR="/home/$USER/UNPACKDIR"
+UEFIDIR="/usr/lib/syslinux/modules/efi64"
 TFTP_DEFAULT="/srv/tftp"
 HTTP_DEFAULT="/var/www/html"
 JAMMYDESKTOP=xubuntu-22.04.2-desktop-amd64.iso
@@ -36,6 +37,8 @@ sudo apt install tftpd-hpa -y
 sudo apt install apache2 -y
 sudo apt install nfs-kernel-server -y
 sudo apt install unzip -y
+sudo apt install syslinux-common syslinux-efi -y
+
 
 # Download pxelinux packages
 mkdir -p $UNPACKDIR/{shim,grub}
@@ -57,21 +60,24 @@ sudo mkdir -p $TFTP_DEFAULT/pxelinux.cfg
 sudo mkdir -p $HTTP_DEFAULT/xubuntu/{server,desktop}/{focal,jammy}
 
 
-### download UEFI packages & ISO images
-cd $UNPACKDIR
-echo $UNPACKDIR
-apt download shim-signed
-dpkg-deb --fsys-tarfile shim-signed*deb | tar x ./usr/lib/shim/shimx64.efi.signed.latest -O > bootx64.efi
-sudo mv bootx64.efi /srv/tftp
-apt download grub-efi-amd64-signed
-dpkg-deb --fsys-tarfile grub-efi-amd64-signed*deb | tar x ./usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed -O > grubx64.efi
-sudo mv grubx64.efi /srv/tftp
-apt download grub-common
-dpkg-deb --fsys-tarfile grub-common*deb | tar x ./usr/share/grub/unicode.pf2 -O > unicode.pf2
-sudo mv unicode.pf2 /srv/tftp/grub/font.pf2
-sudo cp $UNPACKDIR/efi64/efi/syslinux.efi $TFTP_DEFAULT
-sudo cp $UNPACKDIR/efi64/com32/elflink/ldlinux/ldlinux.e64 $TFTP_DEFAULT
-sudo cp $UNPACKDIR/efi64/com32/lib/libcom32.c32 $TFTP_DEFAULT
+### Copy UEFI files to $TFTP_DEFAULT
+sudo cp $UEFIDIR/{libutil.c32,ldlinux.e64,menu.c32} $TFTP_DEFAULT
+sudo cp /usr/lib/SYSLINUX.EFI/efi64/syslinux.efi $TFTP_DEFAULT
+
+# cd $UNPACKDIR
+# echo $UNPACKDIR
+# apt download shim-signed
+# dpkg-deb --fsys-tarfile shim-signed*deb | tar x ./usr/lib/shim/shimx64.efi.signed.latest -O > bootx64.efi
+# sudo mv bootx64.efi /srv/tftp
+# apt download grub-efi-amd64-signed
+# dpkg-deb --fsys-tarfile grub-efi-amd64-signed*deb | tar x ./usr/lib/grub/x86_64-efi-signed/grubnetx64.efi.signed -O > grubx64.efi
+# sudo mv grubx64.efi /srv/tftp
+# apt download grub-common
+# dpkg-deb --fsys-tarfile grub-common*deb | tar x ./usr/share/grub/unicode.pf2 -O > unicode.pf2
+# sudo mv unicode.pf2 /srv/tftp/grub/font.pf2
+# sudo cp $UNPACKDIR/efi64/efi/syslinux.efi $TFTP_DEFAULT
+# sudo cp $UNPACKDIR/efi64/com32/elflink/ldlinux/ldlinux.e64 $TFTP_DEFAULT
+# sudo cp $UNPACKDIR/efi64/com32/lib/libcom32.c32 $TFTP_DEFAULT
 
 
 
@@ -95,8 +101,8 @@ sudo umount /mnt
 
 ### populate the tftp folder
 sudo cp $UNPACKDIR/bios/com32/elflink/ldlinux/ldlinux.c32  $TFTP_DEFAULT
-sudo cp $UNPACKDIR/bios/com32/libutil/libutil.c32 $TFTP_DEFAULT
-sudo cp $UNPACKDIR/bios/com32/menu/menu.c32 $TFTP_DEFAULT
+# sudo cp $UNPACKDIR/bios/com32/libutil/libutil.c32 $TFTP_DEFAULT
+# sudo cp $UNPACKDIR/bios/com32/menu/menu.c32 $TFTP_DEFAULT
 sudo cp $UNPACKDIR/bios/com32/menu/vesamenu.c32 $TFTP_DEFAULT
 sudo cp $UNPACKDIR/bios/core/pxelinux.0 $TFTP_DEFAULT
 sudo cp $UNPACKDIR/bios/core/lpxelinux.0 $TFTP_DEFAULT
