@@ -37,7 +37,7 @@ sudo apt install tftpd-hpa -y
 sudo apt install apache2 -y
 sudo apt install nfs-kernel-server -y
 sudo apt install unzip -y
-sudo apt install syslinux-common syslinux-efi -y
+# sudo apt install syslinux-common syslinux-efi -y
 
 
 # Download pxelinux packages
@@ -61,8 +61,8 @@ sudo mkdir -p $HTTP_DEFAULT/xubuntu/{server,desktop}/{focal,jammy}
 
 
 ### Copy UEFI files to $TFTP_DEFAULT
-sudo cp $UEFIDIR/{ldlinux.e64} $TFTP_DEFAULT
-sudo cp /usr/lib/SYSLINUX.EFI/efi64/syslinux.efi $TFTP_DEFAULT
+# sudo cp $UEFIDIR/{ldlinux.e64} $TFTP_DEFAULT
+# sudo cp /usr/lib/SYSLINUX.EFI/efi64/syslinux.efi $TFTP_DEFAULT
 
 # cd $UNPACKDIR
 # echo $UNPACKDIR
@@ -121,7 +121,7 @@ sudo cp $HTTP_DEFAULT/xubuntu/desktop/jammy/casper/initrd $TFTP_DEFAULT/xubuntu/
 ### copy the default file included here to $TFTP_DEFAULT/pxelinux.cfg
 # sudo cp $CODEDIR/install-pxe/default $TFTP_DEFAULT/pxelinux.cfg
 sudo cp $CODEDIR/install-pxe/default $TFTP_DEFAULT/pxelinux.cfg
-sudo cp $CODEDIR/install-pxe/grub.cfg $TFTP_DEFAULT/grub
+# sudo cp $CODEDIR/install-pxe/grub.cfg $TFTP_DEFAULT/grub
 
 
 ### copy the exports file over the default exports file
