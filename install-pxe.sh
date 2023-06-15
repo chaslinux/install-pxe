@@ -61,7 +61,7 @@ sudo mkdir -p $HTTP_DEFAULT/xubuntu/{server,desktop}/{focal,jammy}
 
 
 ### Copy UEFI files to $TFTP_DEFAULT
-sudo cp $UEFIDIR/{libutil.c32,ldlinux.e64,menu.c32} $TFTP_DEFAULT
+sudo cp $UEFIDIR/{ldlinux.e64} $TFTP_DEFAULT
 sudo cp /usr/lib/SYSLINUX.EFI/efi64/syslinux.efi $TFTP_DEFAULT
 
 # cd $UNPACKDIR
@@ -101,8 +101,8 @@ sudo umount /mnt
 
 ### populate the tftp folder
 sudo cp $UNPACKDIR/bios/com32/elflink/ldlinux/ldlinux.c32  $TFTP_DEFAULT
-# sudo cp $UNPACKDIR/bios/com32/libutil/libutil.c32 $TFTP_DEFAULT
-# sudo cp $UNPACKDIR/bios/com32/menu/menu.c32 $TFTP_DEFAULT
+sudo cp $UNPACKDIR/bios/com32/libutil/libutil.c32 $TFTP_DEFAULT
+sudo cp $UNPACKDIR/bios/com32/menu/menu.c32 $TFTP_DEFAULT
 sudo cp $UNPACKDIR/bios/com32/menu/vesamenu.c32 $TFTP_DEFAULT
 sudo cp $UNPACKDIR/bios/core/pxelinux.0 $TFTP_DEFAULT
 sudo cp $UNPACKDIR/bios/core/lpxelinux.0 $TFTP_DEFAULT
