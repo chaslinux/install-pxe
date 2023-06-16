@@ -54,13 +54,15 @@ fi
 ### Create the tftp folder structure, 
 # note - differs from c-nergy as /srv/tftp is the default
 # in /var/www/html used the xubuntu subdirectory instead of just server and desktop
-sudo mkdir -p $TFTP_DEFAULT/{xubuntu,grub}
+sudo mkdir -p $TFTP_DEFAULT/{xubuntu,efi64}
 sudo mkdir -p $TFTP_DEFAULT/xubuntu/desktop/jammy
 sudo mkdir -p $TFTP_DEFAULT/pxelinux.cfg
 sudo mkdir -p $HTTP_DEFAULT/xubuntu/{server,desktop}/{focal,jammy}
 
 
 ### Copy UEFI files to $TFTP_DEFAULT
+sudo wget http://archive.ubuntu.com/ubuntu/dists/$(lsb_release -cs)/main/uefi/grub2-amd64/current/grubnetx64.efi.signed -O /srv/tftp/efi64/syslinux.efi
+
 # sudo cp $UEFIDIR/{ldlinux.e64} $TFTP_DEFAULT
 # sudo cp /usr/lib/SYSLINUX.EFI/efi64/syslinux.efi $TFTP_DEFAULT
 
